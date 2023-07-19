@@ -5,11 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.annotation.Nullable
-import androidx.navigation.fragment.findNavController
+import android.widget.TextView
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,22 +15,22 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [FirstFragment.newInstance] factory method to
+ * Use the [ThirdFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FirstFragment : Fragment() {
+class ThirdFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    var etName : EditText ?= null
-    var btnNextFragment : Button ?= null
-
+    private var tvName : TextView ?= null
+    private var tvRollNo : TextView ?= null
+    private lateinit var nameFinal : String
+    private lateinit var rollNoFinal : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
-
         }
     }
 
@@ -42,26 +39,23 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false)
+        return inflater.inflate(R.layout.fragment_third, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btnNextFragment = view.findViewById(R.id.btnNextFragment)
-        etName = view.findViewById(R.id.etName)
-        btnNextFragment?.setOnClickListener {
-            val name = etName?.text.toString()
-            if (name.isNullOrEmpty()) {
-                etName?.error="Name can't be NULL"
-                Toast.makeText(requireActivity(),"Please fill valid name!",Toast.LENGTH_SHORT).show()
-            }else{
-                val bundle = Bundle()
-                bundle.putString("name", name)
-                findNavController().navigate(R.id.secondFragment, bundle)
-            }
-
+        arguments?.let {
+            nameFinal = it.getString("name").toString()
+            rollNoFinal = it.getString("RollNo").toString()
+            System.out.println("it.getString(\"RollNo\") ${it.getString("RollNo")}")
         }
+        //println("Name $nameFinal Roll no $rollNoFinal")
+        tvRollNo = view.findViewById(R.id.tvRollNo)
+        tvName = view.findViewById(R.id.tvName)
+        tvName?.setText(nameFinal)
+        tvRollNo?.setText(rollNoFinal)
     }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -69,12 +63,12 @@ class FirstFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment FirstFragment.
+         * @return A new instance of fragment ThirdFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            FirstFragment().apply {
+            ThirdFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

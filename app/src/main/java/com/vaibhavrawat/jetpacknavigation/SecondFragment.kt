@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
@@ -23,6 +25,9 @@ class SecondFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     var btnBackFragment : Button ?= null
+    var btnNextFragment3 : Button ?= null
+    var etRollNo : EditText ?= null
+    var name = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +48,29 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btnBackFragment = view.findViewById(R.id.btnBackFragment)
+        btnNextFragment3 = view.findViewById(R.id.btnNextFragment3)
+        etRollNo = view.findViewById(R.id.etRollNo)
+        arguments?.let {
+            name = it.getString("name","")
+            System.out.println("name passed $name")
+        }
+        btnNextFragment3?.setOnClickListener {
+
+            val rollNo = etRollNo?.text.toString()
+            if (rollNo.isNullOrEmpty()) {
+                etRollNo?.error="Roll number can't be NULL"
+                Toast.makeText(requireActivity(),"Please fill valid Roll No!", Toast.LENGTH_SHORT).show()
+            }else{
+                val bundle = Bundle()
+                bundle.putString("RollNo", rollNo)
+                bundle.putString("name", name)
+                findNavController().navigate(R.id.thirdFragment, bundle)
+            }
+        }
         btnBackFragment?.setOnClickListener {
             findNavController().popBackStack()
         }
+
     }
     companion object {
         /**
